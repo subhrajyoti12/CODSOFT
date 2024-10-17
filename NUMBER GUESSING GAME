@@ -1,0 +1,80 @@
+package NumberGame;
+
+import java.util.Random;
+import java.util.Scanner;
+
+public class NumberGuessingGame {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Random random = new Random();
+
+        int roundsPlayed = 0;
+        int roundsWon = 0;
+        String playAgain;
+
+        System.out.println("Welcome to the Number Guessing Game!");
+
+        do {
+            // Generate a random number within the specified range
+            int lowerBound = 1;
+            int upperBound = 100;
+            int numberToGuess = random.nextInt(upperBound - lowerBound + 1) + lowerBound;
+
+            // Set the maximum number of attempts
+            int maxAttempts = 10;
+            int attemptsTaken = 0;
+            boolean guessedCorrectly = false;
+
+            System.out.println("\nRound " + (roundsPlayed + 1) + ":");
+            System.out.println("Guess the number between " + lowerBound + " and " + upperBound + ". You have " + maxAttempts + " attempts.");
+
+            // Start guessing loop
+            while (attemptsTaken < maxAttempts) {
+                System.out.print("Attempt " + (attemptsTaken + 1) + ": Enter your guess: ");
+
+                // Validate user input
+                if (!scanner.hasNextInt()) {
+                    System.out.println("Invalid input. Please enter a valid integer.");
+                    scanner.next(); // Clear the invalid input
+                    continue;
+                }
+
+                int userGuess = scanner.nextInt();
+                attemptsTaken++;
+
+                // Provide feedback
+                if (userGuess < numberToGuess) {
+                    System.out.println("Too low! Try again.");
+                } else if (userGuess > numberToGuess) {
+                    System.out.println("Too high! Try again.");
+                } else {
+                    System.out.println("Congratulations! You've guessed the correct number " + numberToGuess + " in " + attemptsTaken + " attempts.");
+                    guessedCorrectly = true;
+                    roundsWon++;
+                    break;
+                }
+            }
+
+            if (!guessedCorrectly) {
+                System.out.println("Sorry, you've used all " + maxAttempts + " attempts. The correct number was " + numberToGuess + ".");
+            }
+
+            // Update the number of rounds played
+            roundsPlayed++;
+
+            // Ask if the user wants to play another round
+            System.out.print("\nDo you want to play another round? (yes/no): ");
+            playAgain = scanner.next().trim().toLowerCase();
+
+        } while (playAgain.equals("yes"));
+
+        // Display the final score
+        System.out.println("\nGame Over!");
+        System.out.println("You played " + roundsPlayed + " rounds and won " + roundsWon + " rounds.");
+        System.out.println("Thanks for playing the Number Guessing Game!");
+
+        // Close the scanner
+        scanner.close();
+    }
+}
